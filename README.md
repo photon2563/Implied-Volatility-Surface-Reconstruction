@@ -7,13 +7,13 @@ This repository contains a strictly causal, high-performance solution for the re
 
 The primary objective of this project is to accurately interpolate and extrapolate missing IVs across the options surface (strike and time) **without introducing look-ahead bias**. This guarantees that the models constructed here can be safely deployed in live, sequential algorithmic trading strategies.
 
-## 🚀 The Challenge: Look-Ahead Bias
+## The Challenge: Look-Ahead Bias
 
 A common pitfall when handling time-series options data is utilizing global statistical imputers (like Ridge Regression or Iterative Imputers) which calculate the mean, median, or relationships across an entire dataset. While this yields a low Mean Squared Error (MSE) in cross-validation, it introduces severe **look-ahead bias**, allowing future market data to leak into past predictions.
 
 This project tackles this by restricting the data available at row $i$ strictly to information that was known at or before timestamp $t_i$.
 
-## 🛠️ The Solution Methodology
+## The Solution Methodology
 
 The code implements a highly robust **Multi-Pass Causal Imputation Strategy**:
 
@@ -33,7 +33,7 @@ The code implements a highly robust **Multi-Pass Causal Imputation Strategy**:
 - If a contract is entirely missing from the very first row of the dataset (meaning there is nothing to forward-fill), the pipeline falls back to a realistic global static prior (15% IV). 
 - **Look-ahead audit**: `CAUSAL` (Constant prior).
 
-## 📊 Performance & Benchmarking
+## Performance & Benchmarking
 
 The codebase includes an integrated **$k$-seed Cross-Validation** engine that masks 20% of known data to simulate true missing segments.
 
@@ -41,7 +41,7 @@ The codebase includes an integrated **$k$-seed Cross-Validation** engine that ma
 - Ensures that adjustments don't artificially overfit to the wings at the expense of the center.
 - Prints exact MSE/RMSE vs Ground Truth upon execution.
 
-## ⚙️ How to Run
+## How to Run
 
 1. Ensure you have `dataset.csv` in the root directory. This wide-format CSV should contain `datetime`, `underlying_price`, and all option contract columns (e.g., `NIFTY27JAN2615000CE`).
 2. Run the main script:
@@ -52,9 +52,9 @@ The codebase includes an integrated **$k$-seed Cross-Validation** engine that ma
    - `filled_dataset.csv`: The entire wide-format matrix with all NaNs populated.
    - `submission.csv`: A flattened, ID-value mapped CSV ready for automated grader or competition ingestion.
 
-## 📦 Requirements
+## Requirements
 - `numpy`
 - `pandas`
 
-## 🧠 Future Work
+## Future Work
 While this implementation focuses on a blazing-fast, linear approach, further non-linear enhancements such as **Stochastic Volatility Inspired (SVI)** parametric fitting or **Akima 1D Splines** with dampened wing slopes can be integrated into `Pass 1` for even tighter MSE floors, provided they are restricted to operate causally.

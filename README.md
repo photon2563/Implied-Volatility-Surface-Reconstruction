@@ -1,6 +1,5 @@
 # Implied Volatility Surface Reconstruction for NIFTY Options
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python 3.8+](https://img.shields.io/badge/python-3.8+-green.svg)
 
 This repository contains a strictly causal, high-performance solution for the reconstruction of missing Implied Volatility (IV) values in NIFTY options market data. 
